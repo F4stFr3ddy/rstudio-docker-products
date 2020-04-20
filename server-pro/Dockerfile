@@ -21,6 +21,9 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
         libxrender1 \
         libssl1.0.0 \
         libssl-dev \
+        libnss-ldap \
+        libpam-ldap \
+        ldap-utils \
         openssh-client \
         wget
 
@@ -88,6 +91,8 @@ RUN mkdir -p /var/lib/rstudio-server/monitor/log && \
 
 EXPOSE 8787/tcp
 EXPOSE 5559/tcp
+
+COPY setup_ldap.sh /tmp
 
 ENTRYPOINT ["tini", "--"]
 CMD ["/usr/local/bin/startup.sh"]

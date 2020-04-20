@@ -32,6 +32,15 @@ See a complete example of that file at `server-pro/conf`.
 
 In order to persist RSP user files between container restarts please mount `/home` with a persistent volume in the host machine or your docker orchestration system.
 
+### LDAP support
+In order to enable LDAP you need to do the following:\
+```bash
+docker cp ldap.conf rstudio:/etc/ldap.conf
+docker exec -it rstudiopro bash /tmp
+/setup_ldap.sh
+ <LDAP_PASSWORD>
+```
+
 #### Licensing
 
 Using the RStudio Server Pro Docker image requires to have a valid License. You can set the RSP license to use this in two ways:
