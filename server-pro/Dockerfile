@@ -21,11 +21,19 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
         libxrender1 \
         libssl1.0.0 \
         libssl-dev \
-        libnss-ldap \
-        libpam-ldap \
-        ldap-utils \
+        realmd \
+        sssd \
+        sssd-tools \
+        samba-common \
+        krb5-user \
+        packagekit \
+        samba-common-bin \
+        samba-libs \
+        adcli \
+        ntp \
         openssh-client \
-        wget
+        wget \
+        nano
 
 # Install Python  -------------------------------------------------------------#
 ARG PYTHON_VERSION=3.6.5
@@ -75,6 +83,13 @@ ENV RSP_LAUNCHER_TIMEOUT 10
 COPY startup.sh /usr/local/bin/startup.sh
 RUN chmod +x /usr/local/bin/startup.sh
 COPY conf/* /etc/rstudio/
+
+# Install CA certificate
+RUN mkdir /usr/share/ca-certificates/rstudio
+RUN echo | openssl s_client -showcerts -connect wyday.com:443 2>&1 | \
+        sed -ne '/-BEGIN CERTIFICATE-/,/-ENDCERTIFICATE-/p' | \
+        tail -n 32 > /usr/share/ca-certificates/rstudio/rstudio-license.crt
+RUN update-ca-certificates extract
 
 # Install RStudio Server Pro --------------------------------------------------#
 ARG RSP_VERSION=1.2.5042-1
