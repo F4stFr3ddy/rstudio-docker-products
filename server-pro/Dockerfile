@@ -107,7 +107,5 @@ RUN mkdir -p /var/lib/rstudio-server/monitor/log && \
 EXPOSE 8787/tcp
 EXPOSE 5559/tcp
 
-COPY setup_ldap.sh /tmp
-
 ENTRYPOINT ["tini", "--"]
 CMD ["/usr/local/bin/startup.sh"]
